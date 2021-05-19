@@ -7,27 +7,26 @@ const fs = require("fs");
 const http = require("http");
 const path = require("path");
 
-/* const server = http
-  .createServer((req, res) => {
-    console.log(req.url);
-    res.end("<h1>Hello, World!</h1>");
-  })
-  .listen(3000);
-
-console.log("escuchando"); */
-
-const linksArray = [];
 const mdLinks = (filePath, options = { validate: false }) => {
   return new Promise((resolve, reject) => {
     if (path.extname(filePath) !== ".md")
       return reject("File is not .md extension");
-    fs.readFile(filePath, (err, data) => {
-      if (!data) return reject(`Error Path ${err}`);
 
-      const tokens = marked.lexer(data.toString());
-      const html = marked.parser(tokens);
-      const dom = new JSDOM(html);
-      const links = dom.window.document.querySelectorAll("a");
+    const getLinks = () => {
+      return new Promise((resolve, reject) => {
+        fs.readFile(filePath, (err, data) => {
+          if (!data) return reject(`Error Path ${err}`);
+          const tokens = marked.lexer(data.toString());
+          const html = marked.parser(tokens);
+          const dom = new JSDOM(html);
+          const links = dom.window.document.querySelectorAll("a");
+          return resolve(links);
+        });
+      });
+    };
+
+    getLinks().then((links) => {
+      const linksArray = [];
       links.forEach((link) => {
         if (!link.href.startsWith("about:blank"))
           linksArray.push({
@@ -36,6 +35,7 @@ const mdLinks = (filePath, options = { validate: false }) => {
             file: filePath,
           });
       });
+
       const promisesArray = [];
       if (options.validate)
         linksArray.forEach((objLink) => {
