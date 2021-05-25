@@ -1,4 +1,12 @@
+const axios = require("axios");
+const MockAdapter = require("axios-mock-adapter");
 const mdLinks = require("../src/index");
+
+const mock = new MockAdapter(axios);
+global.axios = mock;
+mock.onGet("https://nodejs.org/es/").reply(200, {});
+mock.onGet("https://www.youtube.com/wat.....").reply(404, {});
+// mock.onGet("https://nodejs.org/es/").reply(200, {});
 
 describe("mdLinks", () => {
   it("should be a function", () => {
@@ -27,23 +35,17 @@ describe("mdLinks", () => {
       expect(result[1]).toEqual(objResult);
     });
   });
-  it.skip("should return a objectValidate", () => {
-    const objValidate = {
-      href: "https://nodejs.org/es/",
-      text: "Node.js",
-      file: "readme_test.md",
-      status: 200,
-      ok: "OK",
-    };
+
+  it("should return a status 404", () => {
     expect.assertions(1);
     return mdLinks("readme_test.md", { validate: true }).then((result) => {
-      expect(result[2]).toEqual(objValidate);
+      expect(result[4].status).toBe(404);
     });
   });
   it("should return a promise type object", () => {
     expect.assertions(1);
     return mdLinks("./prueba").then((result) => {
-      expect(typeof result).toBe("object");
+      expect(Array.isArray(result)).toBeTruthy();
     });
   });
   it("should return an error if the file is not .md ext", () => {
