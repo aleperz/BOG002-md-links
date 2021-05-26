@@ -31,8 +31,8 @@ const getLinks = (pathFile, pathAbsol) =>
     const linksHttp = [...links].filter((link) => link.href.startsWith("http"));
     return linksHttp.map((link) => ({
       href: link.href,
-      text: link.textContent,
-      file: pathAbsol,
+      text: link.textContent.substr(0, 30),
+      file: pathAbsol.substr(0, 50),
     }));
   });
 

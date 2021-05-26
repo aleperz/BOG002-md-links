@@ -17,7 +17,7 @@ function uniqueELement(array) {
 function stats(dataMd) {
   const total = dataMd.length;
   const unique = uniqueELement(dataMd);
-  console.table(`Total: ${total}\nunique: ${unique.length}`);
+  console.table({ Total: total, unique: unique.length });
 }
 
 function statsValidate(dataMd) {
@@ -25,27 +25,19 @@ function statsValidate(dataMd) {
   const unique = uniqueELement(dataMd);
   const broken = dataMd.filter((element) => element.ok === "Not Found");
   const brokenUnique = uniqueELement(broken);
-  console.table(
-    `Total: ${total}\nUnique: ${unique.length}\nBroken: ${brokenUnique.length}`
-  );
+  console.table({
+    Total: total,
+    Unique: unique.length,
+    Broken: brokenUnique.length,
+  });
 }
 
 function validateFalse(dataMd) {
-  dataMd.forEach((element) => {
-    console.table(
-      `${element.file} ${element.href} ${element.text.substr(0, 50)}...\n`
-    );
-  });
+  console.table(dataMd);
 }
 
 function validate(dataMd) {
-  dataMd.forEach((element) => {
-    console.table(
-      `${element.file} ${element.href} ${element.ok} ${
-        element.status
-      } ${element.text.substr(0, 50)}...\n`
-    );
-  });
+  console.table(dataMd);
 }
 
 function runOptions(dataMd) {
