@@ -78,7 +78,8 @@ Markdown Links can be run as follows via terminal:
 
 `md-links <path-to-file> [options]`
 
-Por ejemplo:
+
+Example:
 
 #### Options
 
@@ -86,7 +87,7 @@ Por ejemplo:
 
 The module makes an HTTP request to find out if the link works or not.
 
-Por ejemplo:
+Example:
 
 ```sh
 $ md-links ./some/example.md --validate
